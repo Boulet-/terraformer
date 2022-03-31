@@ -146,10 +146,16 @@ func (AzureProvider) GetResourceConnections() map[string]map[string][]string {
 		"analysis": {
 			"resource_group": []string{"resource_group_name", "name"},
 		},
+		"api_management": {
+			"resource_group": []string{"resource_group_name", "name"},
+		},
 		"app_service": {
 			"resource_group": []string{"resource_group_name", "name"},
 		},
 		"application_gateway": {
+			"resource_group": []string{"resource_group_name", "name"},
+		},
+		"application_insight": {
 			"resource_group": []string{"resource_group_name", "name"},
 		},
 		"cosmosdb": {
@@ -279,6 +285,12 @@ func (AzureProvider) GetResourceConnections() map[string]map[string][]string {
 		"scaleset": {
 			"resource_group": []string{"resource_group_name", "name"},
 		},
+		"servicebus": {
+			"resource_group": []string{"resource_group_name", "name"},
+			"servicebus": []string{
+				"namespace_name", "name",
+			},
+		},
 		"ssh_public_key": {
 			"resource_group": []string{
 				"resource_group_name", "name",
@@ -329,8 +341,10 @@ func (AzureProvider) GetResourceConnections() map[string]map[string][]string {
 func (p *AzureProvider) GetSupportedService() map[string]terraformutils.ServiceGenerator {
 	return map[string]terraformutils.ServiceGenerator{
 		"analysis":                             &AnalysisGenerator{},
+		"api_management":                       &APIManagementGenerator{},
 		"app_service":                          &AppServiceGenerator{},
 		"application_gateway":                  &ApplicationGatewayGenerator{},
+		"application_insights":                 &AppInsightsGenerator{},
 		"cosmosdb":                             &CosmosDBGenerator{},
 		"container":                            &ContainerGenerator{},
 		"database":                             &DatabasesGenerator{},
@@ -356,6 +370,7 @@ func (p *AzureProvider) GetSupportedService() map[string]terraformutils.ServiceG
 		"security_center_contact":              &SecurityCenterContactGenerator{},
 		"security_center_subscription_pricing": &SecurityCenterSubscriptionPricingGenerator{},
 		"ssh_public_key":                       &SSHPublicKeyGenerator{},
+		"servicebus":                           &ServiceBusGenerator{},
 		"storage_account":                      &StorageAccountGenerator{},
 		"storage_blob":                         &StorageBlobGenerator{},
 		"storage_container":                    &StorageContainerGenerator{},
