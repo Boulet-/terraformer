@@ -81,3 +81,23 @@ func (g *StorageAccountGenerator) InitResources() error {
 	g.Resources = output
 	return err
 }
+
+func (g *StorageAccountGenerator) PostConvertHook() error {
+	for _, resource := range g.Resources {
+		if resource.InstanceInfo.Type != "azurerm_storage_account" {
+			continue
+		}
+
+		// Remove default value to 0 that are against the constraint [1-365]
+		if resource.InstanceState.Attributes["queue_properties.0.hour_metrics.0.retention_policy_days"] == "0" {
+			delete(resource.Item["queue_properties"].([]interface{})[0].(map[string]interface{})["hour_metrics"].([]interface{})[0].(map[string]interface{}), "retention_policy_days")
+		}
+		if resource.InstanceState.Attributes["queue_properties.0.logging.0.retention_policy_days"] == "0" {
+			delete(resource.Item["queue_properties"].([]interface{})[0].(map[string]interface{})["logging"].([]interface{})[0].(map[string]interface{}), "retention_policy_days")
+		}
+		if resource.InstanceState.Attributes["queue_properties.0.minute_metrics.0.retention_policy_days"] == "0" {
+			delete(resource.Item["queue_properties"].([]interface{})[0].(map[string]interface{})["minute_metrics"].([]interface{})[0].(map[string]interface{}), "retention_policy_days")
+		}
+	}
+	return nil
+}

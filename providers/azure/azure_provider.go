@@ -151,9 +151,18 @@ func (AzureProvider) GetResourceConnections() map[string]map[string][]string {
 		},
 		"app_service": {
 			"resource_group": []string{"resource_group_name", "name"},
+			"app_service":    []string{"app_service_plan_id", "id"},
 		},
 		"application_gateway": {
-			"resource_group": []string{"resource_group_name", "name"},
+			"resource_group": []string{
+				"resource_group_name", "name",
+				"location", "location",
+			},
+			"application_gateway": []string{
+				"subnet_id", "id",
+				"public_ip_address_id", "id",
+				"firewall_policy_id", "id",
+			},
 		},
 		"application_insight": {
 			"resource_group": []string{"resource_group_name", "name"},
